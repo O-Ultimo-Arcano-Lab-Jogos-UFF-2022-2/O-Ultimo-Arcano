@@ -1,6 +1,6 @@
 import sys
-import src.classes.Button
-import src.classes.Game
+import src.classes.components.Button
+import src.classes.scenes.Game
 
 class MainMenu:
     window = None
@@ -16,8 +16,8 @@ class MainMenu:
 
         self.title = src.pplay.sprite.Sprite("./assets/images/logo.png")
 
-        self.playButton = src.classes.Button.Button("./assets/images/play_button.png", 0, 0)
-        self.exitButton = src.classes.Button.Button("./assets/images/exit_button.png", 0, 0)
+        self.playButton = src.classes.components.Button.Button("./assets/images/play_button.png", 0, 0)
+        self.exitButton = src.classes.components.Button.Button("./assets/images/exit_button.png", 0, 0)
 
         self.title.x = (self.window.width / 2) - self.title.width / 2
         self.title.y = 50
@@ -37,7 +37,7 @@ class MainMenu:
         self.drawScreen()
 
         if (self.mouse.is_over_object(self.playButton.gameObject) and clicked):
-            self.screen = src.classes.Game.Game(self.window, self.mouse, self.keyboard)
+            self.screen = src.classes.scenes.Game.Game(self.window, self.mouse, self.keyboard)
 
         if (self.mouse.is_over_object(self.exitButton.gameObject) and clicked):
             sys.exit()

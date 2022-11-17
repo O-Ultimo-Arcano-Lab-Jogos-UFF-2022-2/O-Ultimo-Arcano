@@ -1,8 +1,7 @@
 from curses import window
 from turtle import width
-import src.classes.Button
-import src.classes.MainMenu
-import src.classes.Player
+import src.classes.scenes.MainMenu
+import src.classes.gameObjects.Player
 from pytmx.util_pygame import load_pygame
 
 class Game:
@@ -19,7 +18,7 @@ class Game:
         self.mouse = mouse
         self.keyboard = keyboard
         self.screen = self
-        self.player = src.classes.Player.Player(window, keyboard)
+        self.player = src.classes.gameObjects.Player.Player(window, keyboard)
         self.tmxdata = load_pygame("./assets/maps/SnowMap.tmx")
 
     def blitAllTiles(self):
@@ -40,4 +39,4 @@ class Game:
         self.worldOffset = self.player.control(self.worldOffset)
 
         if (self.keyboard.key_pressed("ESC")):
-            self.screen = src.classes.MainMenu.MainMenu(self.window, self.mouse, self.keyboard)
+            self.screen = src.classesclasses.scenes.MainMenu.MainMenu(self.window, self.mouse, self.keyboard)

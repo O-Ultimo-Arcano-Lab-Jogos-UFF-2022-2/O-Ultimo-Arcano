@@ -3,14 +3,14 @@ import sys
 import pygame
 from pygame.locals import *
 from src.pplay.window import *
-import src.classes.MainMenu
+import src.classes.scenes.MainMenu
 
 # Initializes pygame's modules
 pygame.init()
 clock = pygame.time.Clock()
 
 # Game Window Initialization
-gameWindow = Window(1600,800)
+gameWindow = Window(1216,800)
 gameWindow.set_title("O Ultimo Arcano")
 gameWindow.gameDifficulty = 1
 
@@ -20,7 +20,7 @@ mouse = gameWindow.get_mouse()
 rightClicking = False
 
 # Initialize Screen
-currentScreen = src.classes.MainMenu.MainMenu(gameWindow, mouse, keyboard)
+currentScreen = src.classes.scenes.MainMenu.MainMenu(gameWindow, mouse, keyboard)
 
 # Game Loop
 while (gameWindow):
