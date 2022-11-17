@@ -12,7 +12,6 @@ clock = pygame.time.Clock()
 # Game Window Initialization
 gameWindow = Window(1216,800)
 gameWindow.set_title("O Ultimo Arcano")
-gameWindow.gameDifficulty = 1
 
 # Controls Initialization
 keyboard = gameWindow.get_keyboard()
@@ -23,10 +22,7 @@ rightClicking = False
 currentScreen = src.classes.scenes.MainMenu.MainMenu(gameWindow, mouse, keyboard)
 
 # Game Loop
-while (gameWindow):
-    # Clean Background
-    gameWindow.set_background_color((0, 0, 0))
-    
+while (gameWindow):    
     # Current Screen Game Loop
     currentScreen.loop(rightClicking)
 

@@ -1,12 +1,7 @@
 from src.pplay.sprite import *
 
 class Player:
-    window = None
-    keyboard = None
-    gameObject = None
     absoluteSpeed = 400
-    xSpeed = None
-    ySpeed = None
     moveUpKeybind = "UP"
     moveDownKeybind = "DOWN"
     moveLeftKeybind = "LEFT"
@@ -24,48 +19,35 @@ class Player:
         self.xSpeed = self.absoluteSpeed
         self.ySpeed = self.absoluteSpeed
 
-    def control(self, offset):
-        worldOffset = offset
-
+    def control(self):
         if (self.keyboard.key_pressed(self.moveUpKeybind)):
-            worldOffset[1] += self.moveUp()
+            self.moveUp()
 
         if (self.keyboard.key_pressed(self.moveDownKeybind)):
-            worldOffset[1] += self.moveDown()
+            self.moveDown()
 
         if (self.keyboard.key_pressed(self.moveLeftKeybind)):
-            worldOffset[0] += self.moveLeft()
+            self.moveLeft()
 
         if (self.keyboard.key_pressed(self.moveRightKeybind)):
-            worldOffset[0] += self.moveRight()
-
-        return worldOffset
+            self.moveRight()
 
     def moveUp(self):
         self.gameObject.y -= self.ySpeed * self.window.delta_time()
-        if (self.gameObject.y < 128):
-            self.gameObject.y = 128            
-            return 32
-        return 0
+        if (self.gameObject.y < 0):
+            self.gameObject.y = 0
 
     def moveDown(self):
         self.gameObject.y += self.ySpeed * self.window.delta_time()
-        if (self.gameObject.y > self.window.height - self.gameObject.height - 128):
-            self.gameObject.y = self.window.height - self.gameObject.height - 128
-            return -32
-        return 0
+        if ((self.gameObject.y + self.gameObject.height) > self.window.height):
+            self.gameObject.y = self.window.height - self.gameObject.height
 
     def moveLeft(self):
         self.gameObject.x -= self.xSpeed * self.window.delta_time()
-        if (self.gameObject.x < 256):
-            self.gameObject.x = 256
-            return 32
-        return 0            
-    
+        if (self.gameObject.x < 0):
+            self.gameObject.x = 0
 
     def moveRight(self):
         self.gameObject.x += self.xSpeed * self.window.delta_time()
-        if (self.gameObject.x > self.window.width - self.gameObject.width - 256):
-            self.gameObject.x = self.window.width - self.gameObject.width - 256
-            return -32
-        return 0            
+        if (self.gameObject.x > self.window.width - self.gameObject.width):
+            self.gameObject.x = self.window.width - self.gameObject.width

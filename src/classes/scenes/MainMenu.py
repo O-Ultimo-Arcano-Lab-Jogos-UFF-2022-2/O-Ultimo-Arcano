@@ -3,11 +3,6 @@ import src.classes.components.Button
 import src.classes.scenes.Game
 
 class MainMenu:
-    window = None
-    mouse = None
-    keyboard = None
-    screen = None
-
     def __init__(self, window, mouse, keyboard):
         self.window = window
         self.mouse = mouse
@@ -29,6 +24,7 @@ class MainMenu:
         self.exitButton.gameObject.y = 300
 
     def drawScreen(self):
+        self.window.set_background_color((0, 0, 0))
         self.title.draw()
         self.playButton.gameObject.draw()
         self.exitButton.gameObject.draw()
