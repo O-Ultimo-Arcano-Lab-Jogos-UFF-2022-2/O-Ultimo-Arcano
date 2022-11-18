@@ -1,4 +1,5 @@
 from src.pplay.sprite import *
+import src.classes.gameObjects.Weapon
 
 class Player:
     absoluteSpeed = 400
@@ -6,6 +7,7 @@ class Player:
     moveDownKeybind = "DOWN"
     moveLeftKeybind = "LEFT"
     moveRightKeybind = "RIGHT"
+    throwWeaponKeybind = "SPACE"
 
     def __init__(self, window, keyboard):
         self.window = window
@@ -19,6 +21,9 @@ class Player:
         self.xSpeed = self.absoluteSpeed
         self.ySpeed = self.absoluteSpeed
 
+        self.weapon = src.classes.gameObjects.Weapon.Weapon(self.window, self.keyboard, self)
+        self.hasWeapon = True
+
     def control(self):
         if (self.keyboard.key_pressed(self.moveUpKeybind)):
             self.moveUp()
@@ -31,6 +36,15 @@ class Player:
 
         if (self.keyboard.key_pressed(self.moveRightKeybind)):
             self.moveRight()
+
+        if (self.keyboard.key_pressed(self.throwWeaponKeybind)):
+            # Implement spacebar toggle
+
+            if (self.hasWeapon):
+                self.weapon.launch("NE")
+                self.hasWeapon = False
+            else:
+                self.weapon.returnToPlayer()
 
     def moveUp(self):
         self.gameObject.y -= self.ySpeed * self.window.delta_time()

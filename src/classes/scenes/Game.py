@@ -15,9 +15,13 @@ class Game:
     def drawScreen(self):
         self.window.screen.blit(self.background, (0, 0))
         self.player.gameObject.draw()
+        
+        if (self.player.weapon.visible):
+            self.player.weapon.gameObject.draw()
 
     def loop(self, click):
         self.player.control()
+        self.player.weapon.control()
 
         self.drawScreen()
 
