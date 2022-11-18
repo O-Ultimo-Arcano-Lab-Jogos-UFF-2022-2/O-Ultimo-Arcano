@@ -32,27 +32,45 @@
 #
 # SAIDA 1. Retorna uma booleana indicando que a wave terminou
 
-from math import randint
+from random import randint
 
 class Wave():
     """ 
     Tempo de intervalo entre os spawns dos
     inimigos em segundos. 
     """
-    spawnInterval = 0.35
+    spawnInterval = 0.75
 
-    def __init__(self, window, enemies, maxEnemiesAlive):
+    def __init__(self, window, maxEnemiesAlive, enemies):
         self.window = window
 
         self.enemies = enemies
+
+        """
+        Representa as vidas da wave. Ela perde 1 de vida
+        para cada inimigo que é derrotado, até chegar a 
+        a 0.
+        """
         self.life = len(enemies)
         self.maxAliveEnemies = maxEnemiesAlive
 
+        """
+        Representa o índice do último inimigo spawanado.
+        """
         self.lastSpawnIndex = 0
+        
+        """ 
+        Contagem de inimigos vivos.
+        """
         self.aliveEnemiesCount = 0
+
+        """ 
+        Timer interno para contar o intervalo entre
+        os spawns de inimigo. Ele progride de modo
+        decrescente, até chegar à 0.
+        """
         self.timer = Wave.spawnInterval
         self.aliveEnemies = []
-
 
     """
     Spawna o próximo inimigo disponível e move
@@ -63,14 +81,18 @@ class Wave():
         if (self.aliveEnemies == self.maxAliveEnemies):
             return
 
-        x = randint(0, 1216) if x is None else x
-        y = randint(0, 800) if y is None else y
+        if (self.lastSpawnIndex == len(self.enemies)):
+            return
+
+        x = randint(0, self.window.width) if x is None else x
+        y = randint(0, self.window.height) if y is None else y
 
         enemy = self.enemies[self.lastSpawnIndex](self)
         enemy.x = x
         enemy.y = y
         self.aliveEnemies.append(enemy)
         self.aliveEnemiesCount += 1
+        self.lastSpawnIndex += 1
 
         return enemy
         
@@ -86,19 +108,13 @@ class Wave():
             enemy for enemy in self.aliveEnemies if enemy != target
         ] 
 
-        # É usado o len em vez de diminuir 1 para caso 
-        # o destroyEnemy não tenha encontrado o inimigo
-        self.life = len(self.aliveEnemies)
+        self.aliveEnemiesCount -= 1
+        self.life -= 1
 
 
     def updateEnemies(self):
         for enemy in self.aliveEnemies:
             enemy.loop()
-    
-
-    def drawEnemies(self):
-        for enemy in self.aliveEnemies:
-            enemy.draw()
 
 
     def resetTimer(self):
@@ -116,17 +132,19 @@ class Wave():
         
         self.updateEnemies()
 
-        if (self.aliveEnemies < self.maxAliveEnemies):
+        if (self.aliveEnemiesCount < self.maxAliveEnemies or
+            self.lastSpawnIndex < len(self.aliveEnemies)):
             self.timer -= self.window.delta_time()
-        
-            if (self.timer == 0):
+            
+            if (self.timer <= 0):
                 self.spawnEnemy()
                 self.resetTimer()
 
+        print(len(self.aliveEnemies))
+
         return self.life
 
-    
     def draw(self):
-        self.drawEnemies()
-        
+        for enemy in self.aliveEnemies:
+            enemy.gameObject.draw()
         

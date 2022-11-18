@@ -39,9 +39,5 @@ class Enemy():
         # e esconder.
         self.wave.destroyEnemy(self)
 
-
-    def draw(self):
-        self.gameObject.draw()
-
-    @abstractmethod
-    def loop(self): pass
+    def loop(self): 
+        pass
