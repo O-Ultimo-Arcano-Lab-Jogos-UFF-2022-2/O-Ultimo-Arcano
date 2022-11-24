@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from PPlay.sprite import Sprite
+from src.helpers.math import distance
 
 class Enemy():
 
@@ -29,6 +30,9 @@ class Enemy():
     def y(self, value):
         self.gameObject.y = value
 
+
+    def distance_to(self, gameObject):
+        return distance(self, gameObject)
 
     """
     Realiza todos os procedimentos para esconder o sprite

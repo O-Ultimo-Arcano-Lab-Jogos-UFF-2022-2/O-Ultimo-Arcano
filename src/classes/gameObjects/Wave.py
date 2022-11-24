@@ -141,8 +141,6 @@ class Wave():
                 self.spawnEnemy()
                 self.resetTimer()
 
-        print(len(self.aliveEnemies))
-
         return self.life
 
     def draw(self):
