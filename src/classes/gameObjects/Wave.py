@@ -41,7 +41,8 @@ class Wave():
     """
     spawnInterval = 0.75
 
-    def __init__(self, window, maxEnemiesAlive, enemies):
+    def __init__(self, game, window, maxEnemiesAlive, enemies):
+        self.game = game
         self.window = window
 
         self.enemies = enemies

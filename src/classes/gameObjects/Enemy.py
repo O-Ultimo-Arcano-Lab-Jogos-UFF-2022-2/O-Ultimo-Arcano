@@ -1,12 +1,12 @@
 from abc import abstractmethod
+from PPlay.sprite import Sprite
 
 class Enemy():
 
     def __init__(self, wave):
         self.wave = wave
-        self.gameObject = None
+        self.gameObject: Sprite = None
         self.life = 1
-
 
     """
     Setters & Getters:
@@ -40,4 +40,7 @@ class Enemy():
         self.wave.destroyEnemy(self)
 
     def loop(self): 
-        pass
+        if (self.gameObject is None):
+            return
+
+        

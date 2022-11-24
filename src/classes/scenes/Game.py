@@ -18,9 +18,9 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(window, 3, [Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
-            Wave(window, 9, [Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
-            Wave(window, 10, [Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
+            Wave(self, window, 3, [Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
+            Wave(self, window, 9, [Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
+            Wave(self, window, 10, [Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
         ])
 
     def drawScreen(self):
