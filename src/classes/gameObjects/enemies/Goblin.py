@@ -29,7 +29,7 @@ class Goblin(Enemy):
         """ Velocidade base do Goblin. É em cima dele que 
         os cálculos de velocidade serão feitos. Este valor
         não deve ser alterado em tempo de execução. """
-        self.baseSpeed = Vector(120, 120)
+        self.baseSpeed = Vector(140, 140)
 
         """ O vetor da velocidade. Em cada loop ele é 
         atualizado. """
@@ -40,7 +40,7 @@ class Goblin(Enemy):
 
         """ Porcentagem de slow o Goblin irá sofrer enquanto
         estiver carregando. """
-        self.slowPercentage = 0.75
+        self.slowPercentage = 0.7
 
         """ O tempo em segundos que o charge irá durar. """
         self.chargeDuration = 1.2
@@ -106,8 +106,7 @@ class Goblin(Enemy):
                 self.timer = self.chargeDuration
             else:
                 # Se não, irá continuar seguindo o player.
-                self.speed.x = self.baseSpeed.x * vectorDirection.x
-                self.speed.y = self.baseSpeed.y * vectorDirection.y
+                self.speed = self.baseSpeed.copyDirection(vectorDirection)
         
         # Se ele estiver carregando o dash...
         if (self.inState('CHARGING')):
@@ -122,16 +121,15 @@ class Goblin(Enemy):
             else:
                 # Ou irá continuar carregando se ainda não terminou
                 # de carregar.
-                self.speed.x = slowedSpeed.x * vectorDirection.x
-                self.speed.y = slowedSpeed.y * vectorDirection.y
+                self.speed = slowedSpeed.setDirection(vectorDirection)
         
         # Por fim, se estiver dando dash...
         if (self.inState('DASHING')):
             # Receberá uma alta velocidade enquanto não chegar
             # no final...
-            self.speed = self.getDashSpeed()
-            self.speed.x *= self.dashDirection.x
-            self.speed.y *= self.dashDirection.y
+            self.speed = self\
+                        .getDashSpeed()\
+                        .copyDirection(self.dashDirection)
             
             # E então, irá voltar ao normal.
             if (self.timer <= 0):
