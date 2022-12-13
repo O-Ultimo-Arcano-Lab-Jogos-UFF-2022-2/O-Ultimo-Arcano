@@ -3,12 +3,13 @@ from src.pplay.sprite import Sprite
 from src.classes.utils.Vector import Vector
 from time import sleep
 
+
 class Goblin(Enemy):
     """ 
     # Estados do Goblin:
     Normal => Ele está so andando na direção do player
     esperando para poder começar o dash.
-    
+
     Charging => O Goblin desacelera e começa a carregar
     o dash.
 
@@ -22,7 +23,7 @@ class Goblin(Enemy):
 
     def __init__(self, wave):
         super().__init__(wave)
-        
+
         """ Vida do Goblin. Este valor pode ser ajustado. """
         self.life = 10
 
@@ -66,14 +67,15 @@ class Goblin(Enemy):
         self.state = Goblin.STATES['NORMAL']
 
         # @TODO Trocar o sprite
-        self.gameObject = Sprite('./assets/images/player.png', 1)
+        self.gameObject = Sprite('./assets/images/goblin.png', 1)
 
     """ 
     Getters & Setters
     """
+
     def getSlowedSpeed(self):
         return self.baseSpeed * (1 - self.slowPercentage)
-    
+
     def getDashSpeed(self):
         speed = self.dashDistance / self.dashDuration
         return Vector(speed, speed)
@@ -84,12 +86,12 @@ class Goblin(Enemy):
     """ 
     Misc
     """
+
     def inState(self, state: str):
         return self.state == Goblin.STATES[state]
 
-    
-
     # Loop do Goblin:
+
     def loop(self):
         player = self.wave.game.player.gameObject
         window = self.wave.window
@@ -107,7 +109,7 @@ class Goblin(Enemy):
             else:
                 # Se não, irá continuar seguindo o player.
                 self.speed = self.baseSpeed.copyDirection(vectorDirection)
-        
+
         # Se ele estiver carregando o dash...
         if (self.inState('CHARGING')):
             # Irá se desacelerar...
@@ -122,22 +124,20 @@ class Goblin(Enemy):
                 # Ou irá continuar carregando se ainda não terminou
                 # de carregar.
                 self.speed = slowedSpeed.setDirection(vectorDirection)
-        
+
         # Por fim, se estiver dando dash...
         if (self.inState('DASHING')):
             # Receberá uma alta velocidade enquanto não chegar
             # no final...
             self.speed = self\
-                        .getDashSpeed()\
-                        .copyDirection(self.dashDirection)
-            
+                .getDashSpeed()\
+                .copyDirection(self.dashDirection)
+
             # E então, irá voltar ao normal.
             if (self.timer <= 0):
                 self.setState('NORMAL')
                 self.timer = self.dashCooldown
-           
+
         self.timer -= window.delta_time()
         self.x += self.speed.x * window.delta_time()
         self.y += self.speed.y * window.delta_time()
-      
-  

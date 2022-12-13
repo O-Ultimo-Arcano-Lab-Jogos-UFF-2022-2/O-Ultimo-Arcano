@@ -1,30 +1,50 @@
+import pygame
 from src.pplay.sprite import *
 import src.classes.gameObjects.Weapon
 
+
 class Player:
-    absoluteSpeed = 400
-    moveUpKeybind = "UP"
-    moveDownKeybind = "DOWN"
-    moveLeftKeybind = "LEFT"
-    moveRightKeybind = "RIGHT"
+    absoluteSpeed = 200
+    moveUpKeybind = "W"
+    moveDownKeybind = "S"
+    moveLeftKeybind = "A"
+    moveRightKeybind = "D"
     throwWeaponKeybind = "SPACE"
+    absoluteThrowCooldown = 0.5
+    spacePressed = False
 
     def __init__(self, window, keyboard):
         self.window = window
         self.keyboard = keyboard
         self.gameObject = Sprite("./assets/images/player.png", 1)
 
-        self.gameObject.x = (self.window.width / 2) - (self.gameObject.width / 2)
-        self.gameObject.y = (self.window.height / 2) - (self.gameObject.height / 2)
+        self.gameObject.x = (self.window.width / 2) - \
+            (self.gameObject.width / 2)
+        self.gameObject.y = (self.window.height / 2) - \
+            (self.gameObject.height / 2)
 
         self.absoluteSpeed = self.absoluteSpeed
         self.xSpeed = self.absoluteSpeed
         self.ySpeed = self.absoluteSpeed
 
-        self.weapon = src.classes.gameObjects.Weapon.Weapon(self.window, self.keyboard, self)
+        self.weapon = src.classes.gameObjects.Weapon.Weapon(
+            self.window, self.keyboard, self)
         self.hasWeapon = True
 
-    def control(self):
+        self.throwCooldown = 0
+
+    def control(self, mouseX, mouseY):
+        self.absoluteSpeed = 200
+        self.throwCooldown -= self.window.delta_time()
+        if (self.throwCooldown < 0):
+            self.throwCooldown = 0
+
+        if (pygame.key.get_mods() & pygame.KMOD_SHIFT):
+            self.absoluteSpeed = 400
+
+        self.xSpeed = self.absoluteSpeed
+        self.ySpeed = self.absoluteSpeed
+
         if (self.keyboard.key_pressed(self.moveUpKeybind)):
             self.moveUp()
 
@@ -37,14 +57,15 @@ class Player:
         if (self.keyboard.key_pressed(self.moveRightKeybind)):
             self.moveRight()
 
-        if (self.keyboard.key_pressed(self.throwWeaponKeybind)):
-            # Implement spacebar toggle
+        if (self.keyboard.key_pressed(self.throwWeaponKeybind) and self.throwCooldown == 0):
+            self.throwCooldown = self.absoluteThrowCooldown
 
             if (self.hasWeapon):
-                self.weapon.launch("NE")
+                self.weapon.launch(mouseX, mouseY)
                 self.hasWeapon = False
             else:
                 self.weapon.returnToPlayer()
+            self.spacePressed = False
 
     def moveUp(self):
         self.gameObject.y -= self.ySpeed * self.window.delta_time()
