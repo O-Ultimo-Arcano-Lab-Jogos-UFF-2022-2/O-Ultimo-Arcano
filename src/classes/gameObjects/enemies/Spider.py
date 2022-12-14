@@ -6,6 +6,9 @@ from math import cos, sin, radians
 
 class Spider(Enemy):
 
+    """ Intervalo entre as explosões (em segundos). """
+    EXPLOSION_COOLDOWN = 2.5
+
     def __init__(self, wave):
         super().__init__(wave)
 
@@ -26,6 +29,8 @@ class Spider(Enemy):
         ou não. Normalmente isso é True quando a aranha
         está para colidir com a parede. """
         self.shouldTurn = False
+        
+        self.timer = self.EXPLOSION_COOLDOWN
 
         self.speed = self.baseSpeed\
             .copy()\
