@@ -3,6 +3,7 @@ from src.pplay.sprite import Sprite
 from src.classes.utils.Vector import Vector
 from src.helpers.random import randomNumber
 from math import cos, sin, radians
+from src.classes.gameObjects.CircularHitbox import CircularHitbox
 
 class Spider(Enemy):
 
@@ -29,7 +30,7 @@ class Spider(Enemy):
         ou não. Normalmente isso é True quando a aranha
         está para colidir com a parede. """
         self.shouldTurn = False
-        
+
         self.timer = self.EXPLOSION_COOLDOWN
 
         self.speed = self.baseSpeed\
@@ -53,6 +54,21 @@ class Spider(Enemy):
         randDegrees = radians(randomNumber(arcStart, arcEnd))
         return Vector(cos(randDegrees), sin(randDegrees))
 
+    def cb(self, h, targets):
+        print(targets)
+
+    def createExplosion(self):
+        player = self.wave.game.player
+        hit = CircularHitbox(
+            64, 
+            [ player ],
+            16, 
+            self.cb, 
+            Sprite('./assets/images/attack-1.png', 1)
+        )
+        hit.x = self.x - hit.width / 2 + self.width / 2
+        hit.y = self.y - hit.height / 2 + self.height / 2
+
     # -> Loop do spider:
     # 1. Verifica se o Spider enconstou na parede
     # (if colidiu) Muda a direção para tentar acertar o jogador
@@ -66,7 +82,7 @@ class Spider(Enemy):
     #
     # 4. Anda na direção que está escolhida como atualmente.
     def loop(self):
-        player = self.wave.game.player.gameObject
+        player = self.wave.game.player
         window = self.wave.window
 
         # PROVISÓRIO
@@ -74,6 +90,11 @@ class Spider(Enemy):
             self.turn()
             self.shouldTurn = False
 
+        if (self.timer <= 0):
+            self.createExplosion()
+            self.timer = self.EXPLOSION_COOLDOWN
+
+        self.timer -= window.delta_time()
         self.shouldTurn = self.willBeInWindownEdge()
         self.x += self.speed.x * window.delta_time()
         self.y += self.speed.y * window.delta_time()

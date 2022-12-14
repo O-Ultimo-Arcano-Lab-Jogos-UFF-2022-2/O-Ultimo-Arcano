@@ -1,6 +1,7 @@
 import pygame
 from src.pplay.sprite import *
 import src.classes.gameObjects.Weapon
+from src.classes.utils.ObjectRect import ObjectRect
 
 
 class Player:
@@ -86,3 +87,6 @@ class Player:
         self.gameObject.x += self.xSpeed * self.window.delta_time()
         if (self.gameObject.x > self.window.width - self.gameObject.width):
             self.gameObject.x = self.window.width - self.gameObject.width
+
+    def getRect(self):
+        return ObjectRect(self.gameObject)
