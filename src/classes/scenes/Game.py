@@ -4,8 +4,7 @@ import src.classes.gameObjects.Player
 from src.classes.gameObjects.WaveManager import WaveManager
 from src.classes.gameObjects.Wave import Wave
 from src.classes.gameObjects.enemies.Goblin import Goblin
-
-
+from src.classes.gameObjects.enemies.Spider import Spider
 class Game:
     background = pygame.image.load("./assets/maps/SnowMap.png")
 
@@ -19,12 +18,7 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 3, [Goblin, Goblin, Goblin,
-                 Goblin, Goblin, Goblin, Goblin, Goblin]),
-            Wave(self, window, 9, [Goblin, Goblin, Goblin, Goblin, Goblin,
-                 Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
-            Wave(self, window, 10, [Goblin, Goblin, Goblin, Goblin, Goblin,
-                 Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
+            Wave(self, window, 1, [Spider, Spider]),  
         ])
 
     def drawScreen(self):
