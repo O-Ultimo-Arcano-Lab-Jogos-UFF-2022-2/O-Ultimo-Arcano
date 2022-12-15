@@ -55,7 +55,7 @@ class Spider(Enemy):
         return Vector(cos(randDegrees), sin(randDegrees))
 
     def cb(self, h, targets):
-        print(targets)
+        pass
 
     def createExplosion(self):
         player = self.wave.game.player
