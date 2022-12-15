@@ -1,6 +1,7 @@
 import pygame
-from src.pplay.sprite import *
 import src.classes.gameObjects.Weapon
+from src.classes.utils.Vector import Vector
+from src.pplay.sprite import *
 from src.classes.utils.ObjectRect import ObjectRect
 
 
@@ -10,11 +11,9 @@ class Player:
     moveDownKeybind = "S"
     moveLeftKeybind = "A"
     moveRightKeybind = "D"
-    throwWeaponKeybind = "SPACE"
     absoluteThrowCooldown = 0.5
     absoluteInvincibilityCooldown = 1
     absoluteSprintStamina = 2
-    spacePressed = False
     maxHp = 100
 
     def __init__(self, window, keyboard):
@@ -42,7 +41,7 @@ class Player:
         self.sprintStamina = self.absoluteSprintStamina
         self.rechargingStamina = False
 
-    def control(self, mouseX, mouseY):
+    def control(self, leftClick, rightClick, mouseLocation):
         # Reseting player speed while not sprinting
         self.absoluteSpeed = 200
 
@@ -94,15 +93,13 @@ class Player:
             self.moveRight()
 
         # Throw Weapon
-        if (self.keyboard.key_pressed(self.throwWeaponKeybind) and self.throwCooldown == 0):
+        if (leftClick and self.hasWeapon):
             self.throwCooldown = self.absoluteThrowCooldown
+            self.weapon.launch(mouseLocation)
+            self.hasWeapon = False
 
-            if (self.hasWeapon):
-                self.weapon.launch(mouseX, mouseY)
-                self.hasWeapon = False
-            else:
-                self.weapon.returnToPlayer()
-            self.spacePressed = False
+        if (rightClick and not self.hasWeapon):
+            self.weapon.returnToPlayer()
 
     def moveUp(self):
         self.gameObject.y -= self.ySpeed * self.window.delta_time()
@@ -131,5 +128,6 @@ class Player:
             if self.currentHp == 0:
                 self.window.gameOver = True
                 self.window.playerHasWon = False
+
     def getRect(self):
         return ObjectRect(self.gameObject)

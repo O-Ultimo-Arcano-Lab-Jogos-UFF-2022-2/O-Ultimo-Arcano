@@ -2,11 +2,14 @@ import pygame
 import src.classes.scenes.MainMenu
 import src.classes.gameObjects.Player
 import src.classes.components.HUD
+from src.classes.utils.Vector import Vector
 from src.classes.gameObjects.WaveManager import WaveManager
 from src.classes.gameObjects.Wave import Wave
 from src.classes.gameObjects.enemies.Goblin import Goblin
 from src.classes.gameObjects.enemies.Spider import Spider
 from src.classes.gameObjects.HitboxManager import HitboxManager
+
+
 class Game:
     background = pygame.image.load("./assets/maps/SnowMap.png")
 
@@ -20,7 +23,7 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 1, [Spider, Spider]),  
+            Wave(self, window, 1, [Spider, Spider]),
         ])
 
         self.hud = src.classes.components.HUD.HUD(
@@ -39,13 +42,14 @@ class Game:
 
     def loop(self, leftClick, rightClick):
         mousePosition = self.mouse.get_position()
-        self.player.control(mousePosition[0], mousePosition[1])
+        self.player.control(leftClick, rightClick, Vector(
+            mousePosition[0], mousePosition[1]))
         self.player.weapon.control()
         self.waveManager.loop()
         HitboxManager.loop()
 
         self.drawScreen()
-        
+
         if (self.keyboard.key_pressed("ESC")):
             self.screen = src.classes.scenes.MainMenu.MainMenu(
                 self.window, self.mouse, self.keyboard)

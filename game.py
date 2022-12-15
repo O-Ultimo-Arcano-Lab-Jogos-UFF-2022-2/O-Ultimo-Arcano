@@ -31,8 +31,9 @@ gameWindow.clock = clock
 # Controls Initialization
 keyboard = gameWindow.get_keyboard()
 mouse = gameWindow.get_mouse()
-leftClick = False
-rightClick = False
+leftButtonPreviousStatus = False
+scrollButtonPreviousStatus = False
+rightButtonPreviousStatus = False
 
 # Initialize Screen
 currentScreen = src.classes.scenes.MainMenu.MainMenu(
@@ -40,33 +41,20 @@ currentScreen = src.classes.scenes.MainMenu.MainMenu(
 
 # Game Loop
 while (gameWindow):
-    # Resets variable that sees if mouse is right clicking
-    leftClick = False
-    rightClick = False
-
     # Events Loop
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                leftClick = True
-
-        if event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:
-                leftClick = False
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3:
-                rightClick = True
-
-        if event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 3:
-                rightClick = False
+    [leftButtonCurrentStatus, scrollButtonCurrentStatus,
+        rightButtonCurrentStatus] = pygame.mouse.get_pressed()
 
     # Current Screen Game Loop
+    leftClick = leftButtonCurrentStatus and not leftButtonPreviousStatus
+    scrollClick = scrollButtonCurrentStatus and not scrollButtonPreviousStatus
+    rightClick = rightButtonCurrentStatus and not rightButtonPreviousStatus
+
     currentScreen.loop(leftClick, rightClick)
+
+    leftButtonPreviousStatus = leftButtonCurrentStatus
+    scrollButtonPreviousStatus = scrollButtonCurrentStatus
+    rightButtonPreviousStatus = rightButtonCurrentStatus
 
     # Get Next Screen
     currentScreen = currentScreen.screen
