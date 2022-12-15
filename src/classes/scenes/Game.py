@@ -5,8 +5,8 @@ import src.classes.components.HUD
 from src.classes.gameObjects.WaveManager import WaveManager
 from src.classes.gameObjects.Wave import Wave
 from src.classes.gameObjects.enemies.Goblin import Goblin
-
-
+from src.classes.gameObjects.enemies.Spider import Spider
+from src.classes.gameObjects.HitboxManager import HitboxManager
 class Game:
     background = pygame.image.load("./assets/maps/SnowMap.png")
 
@@ -20,12 +20,7 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 3, [Goblin, Goblin, Goblin,
-                 Goblin, Goblin, Goblin, Goblin, Goblin]),
-            Wave(self, window, 9, [Goblin, Goblin, Goblin, Goblin, Goblin,
-                 Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
-            Wave(self, window, 10, [Goblin, Goblin, Goblin, Goblin, Goblin,
-                 Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
+            Wave(self, window, 1, [Spider, Spider]),  
         ])
 
         self.hud = src.classes.components.HUD.HUD(
@@ -35,6 +30,7 @@ class Game:
         self.window.screen.blit(self.background, (0, 0))
         self.player.gameObject.draw()
         self.waveManager.draw()
+        HitboxManager.draw()
 
         if (self.player.weapon.visible):
             self.player.weapon.gameObject.draw()
@@ -46,8 +42,10 @@ class Game:
         self.player.control(mousePosition[0], mousePosition[1])
         self.player.weapon.control()
         self.waveManager.loop()
-        self.drawScreen()
+        HitboxManager.loop()
 
+        self.drawScreen()
+        
         if (self.keyboard.key_pressed("ESC")):
             self.screen = src.classes.scenes.MainMenu.MainMenu(
                 self.window, self.mouse, self.keyboard)

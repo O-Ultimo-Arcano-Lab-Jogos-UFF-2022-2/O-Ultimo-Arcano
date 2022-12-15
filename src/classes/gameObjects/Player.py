@@ -1,6 +1,7 @@
 import pygame
 from src.pplay.sprite import *
 import src.classes.gameObjects.Weapon
+from src.classes.utils.ObjectRect import ObjectRect
 
 
 class Player:
@@ -130,3 +131,5 @@ class Player:
             if self.currentHp == 0:
                 self.window.gameOver = True
                 self.window.playerHasWon = False
+    def getRect(self):
+        return ObjectRect(self.gameObject)

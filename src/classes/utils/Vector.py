@@ -1,5 +1,5 @@
 from src.classes.utils.GeometricEntity import GeometricEntity
-from math import acos, degrees
+import math
 
 class Vector(GeometricEntity):
 
@@ -44,8 +44,13 @@ class Vector(GeometricEntity):
             return 0
 
         cos = self.dotProduct(vector) / self.norm() * vector.norm()
-        return degrees(acos(cos))
-        
+        return math.degrees(math.acos(cos))
+    
+    def rotateBy(self, degrees):
+        rad = math.radians(degrees)
+        self.x = self.x * math.cos(rad) - self.y * math.sin(rad)
+        self.y = self.x * math.sin(rad) + self.y * math.cos(rad)
+        return self
         
     """
     STATIC    

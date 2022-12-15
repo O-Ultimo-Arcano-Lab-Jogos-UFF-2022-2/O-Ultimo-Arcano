@@ -1,49 +1,34 @@
-from abc import abstractmethod
 from src.pplay.sprite import Sprite
-from src.helpers.math import distance
+from src.classes.utils.Vector import Vector
+from src.classes.gameObjects.GameObjectInterface import GameObjectInterface
 
-
-class Enemy():
-
+class Enemy(GameObjectInterface):
     def __init__(self, wave):
+        self.speed: Vector
+
         self.wave = wave
         self.gameObject: Sprite = None
         self.life = 1
 
-    """
-    Setters & Getters:
-    - Permitem interagir com o gameObject sem a necessidade
-    de acessa-lo diretamente.
-    """
-    @property
-    def x(self):
-        return self.gameObject.x
 
-    @x.setter
-    def x(self, value):
-        self.gameObject.x = value
+    def willBeInWindownEdge(self):
+        window = self.wave.window
 
-    @property
-    def y(self):
-        return self.gameObject.y
+        nextPosition = (
+            self.x + self.speed.x * window.delta_time(),
+            self.y + self.speed.y * window.delta_time()
+        )
 
-    @y.setter
-    def y(self, value):
-        self.gameObject.y = value
-
-    def distance_to(self, gameObject):
-        return distance(self, gameObject)
-
-    """
-    Realiza todos os procedimentos para esconder o sprite
-    e chama o destroyEnemy da wave em que está.
-    """
+        return (
+            nextPosition[0] <= 5 or
+            nextPosition[1] <= 5 or
+            nextPosition[0] + self.width >= window.width - 5 or
+            nextPosition[1] + self.height >= window.height - 5
+        )
 
     def destroy(self):
         # Todo o algorítimo para tirar o inimigo da tela
         # e esconder.
         self.wave.destroyEnemy(self)
 
-    def loop(self):
-        if (self.gameObject is None):
-            return
+    

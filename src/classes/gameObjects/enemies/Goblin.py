@@ -1,7 +1,6 @@
 from src.classes.gameObjects.Enemy import Enemy
 from src.pplay.sprite import Sprite
 from src.classes.utils.Vector import Vector
-from time import sleep
 
 
 class Goblin(Enemy):
@@ -66,7 +65,6 @@ class Goblin(Enemy):
         """ O estado atual do Goblin. """
         self.state = Goblin.STATES['NORMAL']
 
-        # @TODO Trocar o sprite
         self.gameObject = Sprite('./assets/images/goblin.png', 1)
 
     """ 
@@ -102,7 +100,7 @@ class Goblin(Enemy):
 
         # Quando o Goblin estiver normal, ele irá...
         if (self.inState('NORMAL')):
-            if (self.timer <= 0 and self.distance_to(player) < self.dashDistance * 0.8):
+            if (self.timer <= 0 and self.distanceTo(player) < self.dashDistance * 0.8):
                 # Se puder, começar a carregar o dash...
                 self.setState('CHARGING')
                 self.timer = self.chargeDuration
