@@ -1,6 +1,7 @@
 import pygame
 import src.classes.scenes.MainMenu
 import src.classes.gameObjects.Player
+import src.classes.components.HUD
 from src.classes.gameObjects.WaveManager import WaveManager
 from src.classes.gameObjects.Wave import Wave
 from src.classes.gameObjects.enemies.Goblin import Goblin
@@ -27,6 +28,9 @@ class Game:
                  Goblin, Goblin, Goblin, Goblin, Goblin, Goblin, Goblin]),
         ])
 
+        self.hud = src.classes.components.HUD.HUD(
+            window, self.player, self.waveManager)
+
     def drawScreen(self):
         self.window.screen.blit(self.background, (0, 0))
         self.player.gameObject.draw()
@@ -34,6 +38,8 @@ class Game:
 
         if (self.player.weapon.visible):
             self.player.weapon.gameObject.draw()
+
+        self.hud.draw()
 
     def loop(self, leftClick, rightClick):
         mousePosition = self.mouse.get_position()
