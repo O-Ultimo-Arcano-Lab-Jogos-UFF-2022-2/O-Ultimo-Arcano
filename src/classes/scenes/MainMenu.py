@@ -1,9 +1,12 @@
 import sys
+import pygame
 import src.classes.components.Button
 import src.classes.scenes.Game
 
 
 class MainMenu:
+    background = pygame.image.load("./assets/images/background.png")
+
     def __init__(self, window, mouse, keyboard):
         self.window = window
         self.mouse = mouse
@@ -29,7 +32,7 @@ class MainMenu:
         self.exitButton.gameObject.y = 300
 
     def drawScreen(self):
-        self.window.set_background_color((0, 0, 0))
+        self.window.screen.blit(self.background, (0, 0))
         self.title.draw()
         self.playButton.gameObject.draw()
         self.exitButton.gameObject.draw()
