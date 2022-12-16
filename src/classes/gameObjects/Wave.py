@@ -145,5 +145,5 @@ class Wave():
 
     def draw(self):
         for enemy in self.aliveEnemies:
-            enemy.gameObject.draw()
+            enemy.draw()
         

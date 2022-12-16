@@ -14,6 +14,7 @@ class Enemy(GameObjectInterface):
         self.hitbox.width = self.width
         self.hitbox.height = self.height
         self.collisionDamage = 10
+        self.invencible = False
 
     def willBeInWindownEdge(self):
         window = self.wave.window
