@@ -132,7 +132,11 @@ class Player:
     def takeHit(self, damage):
         if (self.invincibilityCooldown == 0):
             self.invincibilityCooldown = self.absoluteInvincibilityCooldown
+<<<<<<< HEAD
             self.currentHp = self.currentHp - damage
+=======
+            self.currentHp = max(self.currentHp - damage, 0)
+>>>>>>> enemy-collision
 
             if self.currentHp == 0:
                 self.window.gameOver = True

@@ -24,7 +24,11 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
+<<<<<<< HEAD
             Wave(self, window, 1, [Spider, Spider]),
+=======
+            Wave(self, window, 3, [Spider]),  
+>>>>>>> enemy-collision
         ])
 
         self.hud = src.classes.components.HUD.HUD(

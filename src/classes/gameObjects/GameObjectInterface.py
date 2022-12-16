@@ -6,18 +6,14 @@ from src.pplay.sprite import Sprite
 
 """ Esta classe é uma interface de GameObject
 com métodos e propriedades comuns aos GameObjects. """
-class GameObjectInterface():
+class GameObjectInterface(GameObject):
     def __init__(self):
-        self.gameObject: GameObject
-
-        # Essas propriedades para coordenadas
-        # são usadas quando não
-        self._x: int | float = 0
-        self._y: int | float = 0
-        self._width: int | float = 0
-        self._height: int | float = 0
-
+        self._gameObject: GameObject
         
+        self._x = 0
+        self._y = 0
+        self._width = 0
+        self._height = 0
 
     """
     Setters & Getters:
@@ -25,55 +21,53 @@ class GameObjectInterface():
     de acessa-lo diretamente.
     """
     @property
-    def x(self):
-        if (self.gameObject is None):
-            return self._x
+    def gameObject(self):
+        return self._gameObject
 
-        return self.gameObject.x
+    @gameObject.setter
+    def gameObject(self, obj: GameObject):
+        if (obj):
+            self.width = obj.width
+            self.height = obj.height
+            
+        self._gameObject = obj
+
+    @property
+    def x(self):
+        return self._x
 
     @x.setter
     def x(self, value):
-        if (self.gameObject is None):
-            self._x = value
+        self._x = value
 
-        self.gameObject.x = value
-
+        if (self.gameObject):
+            self.gameObject.x = value
+        
     @property
     def y(self):
-        if (self.gameObject is None):
-            return self._y
-
-        return self.gameObject.y
+        return self._y
 
     @y.setter
     def y(self, value):
-        if (self.gameObject is None):
-            self._y = value
-            
-        self.gameObject.y = value
-
+        self._y = value    
+        
+        if (self.gameObject):
+            self.gameObject.y = value
+        
     @property
     def width(self):
-        if (self.gameObject is None):
-            return self._width
-            
-        return self.gameObject.width
-
+        return self._width
 
     # Propositalmente não permite que o 
     # sprite seja redimensionado.
     @width.setter
     def width(self, value):
         self._width = value
-            
         
     @property
     def height(self):
-        if (self.gameObject is None):
-            return self._height
-
-        return self.gameObject.height
-
+        return self._height
+        
     @height.setter
     def height(self, value):
         self._height = value
@@ -111,9 +105,8 @@ class GameObjectInterface():
     @abstractmethod
     def destroy(self): pass
 
-    def loop(self):
-        if (self.gameObject is None):
-            return
+    @abstractmethod
+    def loop(self): pass
 
     def draw(self):
         if (isinstance(self.gameObject, Sprite)):

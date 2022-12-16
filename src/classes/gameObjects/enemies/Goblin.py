@@ -49,6 +49,9 @@ class Goblin(Enemy):
         completar o dash. """
         self.dashDuration = 0.3
 
+        """ Dano do dash """
+        self.dashDamage = 15
+
         """ Vetor de direção do dash. Quando o charge termina
         este valor é atualizado com a direção do dash. """
         self.dashDirection = None
@@ -91,16 +94,18 @@ class Goblin(Enemy):
     # Loop do Goblin:
 
     def loop(self):
-        player = self.wave.game.player.gameObject
+        super().loop()
+
+        player = self.wave.game.player
         window = self.wave.window
 
         # Gera um vetor unitário que vai deste inimigo
         # ao player para pegar a direção da velocidade.
-        vectorDirection = Vector.fromObjects(self, player).unit()
+        vectorDirection = Vector.fromObjects(self, player.gameObject).unit()
 
         # Quando o Goblin estiver normal, ele irá...
         if (self.inState('NORMAL')):
-            if (self.timer <= 0 and self.distanceTo(player) < self.dashDistance * 0.8):
+            if (self.timer <= 0 and self.distanceTo(player.gameObject) < self.dashDistance * 0.8):
                 # Se puder, começar a carregar o dash...
                 self.setState('CHARGING')
                 self.timer = self.chargeDuration
@@ -118,6 +123,7 @@ class Goblin(Enemy):
                 self.setState('DASHING')
                 self.dashDirection = vectorDirection
                 self.timer = self.dashDuration
+                self.hitbox.enabled = False
             else:
                 # Ou irá continuar carregando se ainda não terminou
                 # de carregar.
@@ -125,6 +131,9 @@ class Goblin(Enemy):
 
         # Por fim, se estiver dando dash...
         if (self.inState('DASHING')):
+            if (len(self.hitbox.collisions([ player.gameObject ]))):
+                player.takeHit(self.dashDamage)
+
             # Receberá uma alta velocidade enquanto não chegar
             # no final...
             self.speed = self\
@@ -135,6 +144,7 @@ class Goblin(Enemy):
             if (self.timer <= 0):
                 self.setState('NORMAL')
                 self.timer = self.dashCooldown
+                self.hitbox.enabled = True
 
         self.timer -= window.delta_time()
         self.x += self.speed.x * window.delta_time()
