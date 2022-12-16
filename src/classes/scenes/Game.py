@@ -8,6 +8,7 @@ from src.classes.gameObjects.Wave import Wave
 from src.classes.gameObjects.enemies.Goblin import Goblin
 from src.classes.gameObjects.enemies.Spider import Spider
 from src.classes.gameObjects.HitboxManager import HitboxManager
+from src.classes.gameObjects.CollectiblesManager import CollectiblesManager
 
 
 class Game:
@@ -28,10 +29,12 @@ class Game:
 
         self.hud = src.classes.components.HUD.HUD(
             window, self.player, self.waveManager)
+        self.collectiblesManager = CollectiblesManager(window, self.player)
 
     def drawScreen(self):
         self.window.screen.blit(self.background, (0, 0))
         self.player.gameObject.draw()
+        self.collectiblesManager.draw()
         self.waveManager.draw()
         HitboxManager.draw()
 
@@ -46,6 +49,7 @@ class Game:
             mousePosition[0], mousePosition[1]))
         self.player.weapon.control()
         self.waveManager.loop()
+        self.collectiblesManager.loop()
         HitboxManager.loop()
 
         self.drawScreen()

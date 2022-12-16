@@ -35,11 +35,19 @@ class Player:
         self.hasWeapon = True
         self.throwCooldown = 0
 
-        self.currentHp = self.maxHp
+        self._currentHp = self.maxHp / 2
         self.invincibilityCooldown = 0
 
         self.sprintStamina = self.absoluteSprintStamina
         self.rechargingStamina = False
+
+    @property
+    def currentHp(self):
+        return self._currentHp
+
+    @currentHp.setter
+    def currentHp(self, value):
+        self._currentHp = max(0, min(value, self.maxHp))
 
     def control(self, leftClick, rightClick, mouseLocation):
         # Reseting player speed while not sprinting
@@ -123,7 +131,8 @@ class Player:
 
     def takeHit(self, damage):
         if (self.invincibilityCooldown == 0):
-            self.currentHp = max(self.currentHp - damage, 0)
+            self.invincibilityCooldown = self.absoluteInvincibilityCooldown
+            self.currentHp = self.currentHp - damage
 
             if self.currentHp == 0:
                 self.window.gameOver = True
