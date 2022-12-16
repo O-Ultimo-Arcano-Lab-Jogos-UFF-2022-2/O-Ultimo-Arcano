@@ -153,3 +153,4 @@ class Wave():
         for enemy in self.aliveEnemies:
             if (enemy.needsToBeDrawn):
                 enemy.gameObject.draw()
+        

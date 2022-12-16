@@ -8,8 +8,11 @@ from src.classes.gameObjects.WaveManager import WaveManager
 from src.classes.gameObjects.Wave import Wave
 from src.classes.gameObjects.enemies.Goblin import Goblin
 from src.classes.gameObjects.enemies.Spider import Spider
+from src.classes.gameObjects.enemies.Ghost import Ghost
+
 from src.classes.gameObjects.HitboxManager import HitboxManager
 from src.classes.gameObjects.CollectiblesManager import CollectiblesManager
+from src.classes.gameObjects.ProjectileManager import ProjectileManager
 
 
 class Game:
@@ -25,14 +28,14 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 1, [Goblin, Spider], self.player.weapon),
+            Wave(self, window, 1, [Ghost, Goblin, Spider], self.player.weapon),
             Wave(self, window, 3, [Goblin, Goblin,
                  Spider], self.player.weapon),
-            Wave(self, window, 5, [Goblin, Goblin,
+            Wave(self, window, 5, [Goblin, Goblin, Ghost, Ghost,
                  Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider], self.player.weapon),
-            Wave(self, window, 5, [Goblin, Goblin,
-                 Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider, Goblin, Goblin,
-                 Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider], self.player.weapon),
+            Wave(self, window, 5, [Goblin, Goblin, Ghost,
+                 Spider, Goblin, Goblin, Spider, Goblin, Ghost, Goblin, Spider, Goblin, Goblin,
+                 Spider, Goblin, Goblin, Spider, Goblin, Ghost, Goblin, Spider], self.player.weapon),
         ])
 
         self.hud = src.classes.components.HUD.HUD(
@@ -41,6 +44,11 @@ class Game:
 
     def drawScreen(self):
         self.window.screen.blit(self.background, (0, 0))
+        self.player.gameObject.draw()
+        self.collectiblesManager.draw()
+        self.waveManager.draw()
+        HitboxManager.draw()
+        ProjectileManager.draw()
 
         if (self.player.weapon.visible):
             self.player.weapon.gameObject.draw()
@@ -65,6 +73,7 @@ class Game:
         self.waveManager.loop()
         self.collectiblesManager.loop()
         HitboxManager.loop()
+        ProjectileManager.loop()
 
         self.drawScreen()
 
