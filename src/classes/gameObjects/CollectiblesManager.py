@@ -3,7 +3,7 @@ from src.classes.gameObjects.collectibles.LifeOrb import LifeOrb
 
 class CollectiblesManager():
     maxCollectibles = 3
-    absoluteSpawnCooldown = 5
+    absoluteSpawnCooldown = 15
 
     def __init__(self, window, player):
         self.window = window
