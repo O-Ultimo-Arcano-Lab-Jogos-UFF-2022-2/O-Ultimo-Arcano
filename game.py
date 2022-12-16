@@ -28,6 +28,10 @@ gameWindow = Window(1216, 800)
 gameWindow.set_title("O Ultimo Arcano")
 gameWindow.clock = clock
 
+# Game Over Flags Initialization
+gameWindow.gameOver = False
+gameWindow.playerHasWon = False
+
 # Controls Initialization
 keyboard = gameWindow.get_keyboard()
 mouse = gameWindow.get_mouse()

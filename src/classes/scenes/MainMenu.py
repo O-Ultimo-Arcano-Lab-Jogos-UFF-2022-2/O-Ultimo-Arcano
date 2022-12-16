@@ -9,6 +9,7 @@ class MainMenu:
 
     def __init__(self, window, mouse, keyboard):
         self.window = window
+
         self.mouse = mouse
         self.keyboard = keyboard
         self.screen = self
@@ -38,6 +39,10 @@ class MainMenu:
         self.exitButton.gameObject.draw()
 
     def loop(self, leftClick, rightClick):
+        # Reset Game Over
+        self.window.gameOver = False
+        self.window.playerHasWon = False
+
         self.drawScreen()
 
         if (self.mouse.is_over_object(self.playButton.gameObject) and leftClick):

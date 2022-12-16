@@ -1,5 +1,6 @@
 import pygame
 import src.classes.scenes.MainMenu
+import src.classes.scenes.GameOver
 import src.classes.gameObjects.Player
 import src.classes.components.HUD
 from src.classes.utils.Vector import Vector
@@ -24,7 +25,14 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 1, [Spider, Spider], self.player.weapon),
+            Wave(self, window, 1, [Goblin, Spider], self.player.weapon),
+            Wave(self, window, 3, [Goblin, Goblin,
+                 Spider], self.player.weapon),
+            Wave(self, window, 5, [Goblin, Goblin,
+                 Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider], self.player.weapon),
+            Wave(self, window, 5, [Goblin, Goblin,
+                 Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider, Goblin, Goblin,
+                 Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider], self.player.weapon),
         ])
 
         self.hud = src.classes.components.HUD.HUD(
@@ -46,6 +54,10 @@ class Game:
         self.hud.draw()
 
     def loop(self, leftClick, rightClick):
+        if (self.window.gameOver):
+            self.screen = src.classes.scenes.GameOver.GameOver(
+                self.window, self.mouse, self.keyboard)
+
         mousePosition = self.mouse.get_position()
         self.player.control(leftClick, rightClick, Vector(
             mousePosition[0], mousePosition[1]))
