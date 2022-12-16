@@ -6,14 +6,17 @@ from src.pplay.sprite import Sprite
 
 """ Esta classe é uma interface de GameObject
 com métodos e propriedades comuns aos GameObjects. """
+
+
 class GameObjectInterface(GameObject):
     def __init__(self):
         self._gameObject: GameObject
-        
+
         self._x = 0
         self._y = 0
         self._width = 0
         self._height = 0
+        self.needsToBeDrawn = True
 
     """
     Setters & Getters:
@@ -29,7 +32,7 @@ class GameObjectInterface(GameObject):
         if (obj):
             self.width = obj.width
             self.height = obj.height
-            
+
         self._gameObject = obj
 
     @property
@@ -42,38 +45,37 @@ class GameObjectInterface(GameObject):
 
         if (self.gameObject):
             self.gameObject.x = value
-        
+
     @property
     def y(self):
         return self._y
 
     @y.setter
     def y(self, value):
-        self._y = value    
-        
+        self._y = value
+
         if (self.gameObject):
             self.gameObject.y = value
-        
+
     @property
     def width(self):
         return self._width
 
-    # Propositalmente não permite que o 
+    # Propositalmente não permite que o
     # sprite seja redimensionado.
     @width.setter
     def width(self, value):
         self._width = value
-        
+
     @property
     def height(self):
         return self._height
-        
+
     @height.setter
     def height(self, value):
         self._height = value
 
-
-    def distanceTo(self, gameObject, center = False):
+    def distanceTo(self, gameObject, center=False):
         return\
             distance(self, gameObject) \
             if (not center) \
@@ -84,6 +86,7 @@ class GameObjectInterface(GameObject):
     bordas da janela. Também pode ser usado para
     verificar se o objeto está fora da tela.
     """
+
     def isInWindowEdge(self):
         window = self.wave.window
         rect = self.getRect()
@@ -99,6 +102,7 @@ class GameObjectInterface(GameObject):
     Realiza todos os procedimentos para esconder o sprite
     e chama o destroyEnemy da wave em que está.
     """
+
     def getRect(self):
         return ObjectRect(self.gameObject)
 
@@ -109,5 +113,5 @@ class GameObjectInterface(GameObject):
     def loop(self): pass
 
     def draw(self):
-        if (isinstance(self.gameObject, Sprite)):
+        if (isinstance(self.gameObject, Sprite) and self.needsToBeDrawn):
             self.gameObject.draw()

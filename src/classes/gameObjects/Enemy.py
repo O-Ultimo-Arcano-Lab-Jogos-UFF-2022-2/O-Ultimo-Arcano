@@ -28,7 +28,6 @@ class Enemy(GameObjectInterface):
     @life.setter
     def life(self, value):
         self._life = max(0, min(value, self.MAX_HP))
-        
 
     def willBeInWindownEdge(self):
         window = self.wave.window

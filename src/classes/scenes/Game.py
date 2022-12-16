@@ -25,15 +25,19 @@ class Game:
         self.screen = self
         self.player = src.classes.gameObjects.Player.Player(window, keyboard)
 
+        ProjectileManager.projectiles = []
+        HitboxManager.hitboxes = []
+
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 1, [Ghost, Goblin, Spider], self.player.weapon),
+            Wave(self, window, 1, [Spider], self.player.weapon),
+            Wave(self, window, 2, [Goblin, Spider, Ghost], self.player.weapon),
             Wave(self, window, 3, [Goblin, Goblin,
-                 Spider], self.player.weapon),
+                 Spider, Spider, Ghost], self.player.weapon),
             Wave(self, window, 5, [Goblin, Goblin, Ghost, Ghost,
                  Spider, Goblin, Goblin, Spider, Goblin, Goblin, Spider], self.player.weapon),
-            Wave(self, window, 5, [Goblin, Goblin, Ghost,
+            Wave(self, window, 7, [Goblin, Goblin, Ghost,
                  Spider, Goblin, Goblin, Spider, Goblin, Ghost, Goblin, Spider, Goblin, Goblin,
                  Spider, Goblin, Goblin, Spider, Goblin, Ghost, Goblin, Spider], self.player.weapon),
         ])
@@ -44,11 +48,6 @@ class Game:
 
     def drawScreen(self):
         self.window.screen.blit(self.background, (0, 0))
-        self.player.gameObject.draw()
-        self.collectiblesManager.draw()
-        self.waveManager.draw()
-        HitboxManager.draw()
-        ProjectileManager.draw()
 
         if (self.player.weapon.visible):
             self.player.weapon.gameObject.draw()
@@ -59,6 +58,7 @@ class Game:
         self.collectiblesManager.draw()
         self.waveManager.draw()
         HitboxManager.draw()
+        ProjectileManager.draw()
         self.hud.draw()
 
     def loop(self, leftClick, rightClick):

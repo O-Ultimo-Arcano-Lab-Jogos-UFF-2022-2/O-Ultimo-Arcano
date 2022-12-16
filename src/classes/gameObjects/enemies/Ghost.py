@@ -4,6 +4,7 @@ from src.pplay.sprite import Sprite
 from src.classes.gameObjects.projectiles.GhostProjectile import GhostProjectile
 from random import randint
 
+
 class Ghost(Enemy):
 
     STATES = {
@@ -16,16 +17,16 @@ class Ghost(Enemy):
 
     def __init__(self, wave):
         super().__init__(wave)
-        
+
         """ Booleana """
         self.hidden = False
-        
+
         """ Velocidade do fantasma """
         self.baseSpeed = Vector(0, 0)
 
         """ Estado do Ghost """
         self.state = Ghost.STATES.get('IDLE')
-        
+
         """ Duração do modo escondido """
         self.invencibilityDuration = 3.5
 
@@ -55,26 +56,28 @@ class Ghost(Enemy):
         return Vector(
             randomX,
             randomY
-        ) 
+        )
 
     def draw(self):
         if (not self.inState('HIDDEN')):
-            self.gameObject.draw()
-    
+            super().draw()
+
     # -> Loop do Ghost
-    # 1. 
+    # 1.
     def loop(self):
         super().loop()
 
         window = self.wave.window
         player = self.wave.game.player
 
-        if(self.timer <= 0):
+        if (self.timer <= 0):
             if (self.inState('IDLE')):
+                self.hitbox.enabled = False
                 self.setState('HIDDEN')
                 self.timer = self.invencibilityDuration
 
             elif (self.inState('HIDDEN')):
+                self.hitbox.enabled = True
                 randomPosition = self.getRandomPosition()
                 self.x = randomPosition.x
                 self.y = randomPosition.y
@@ -90,6 +93,5 @@ class Ghost(Enemy):
 
                 self.setState('IDLE')
                 self.timer = self.idleDuration
-
 
         self.timer -= window.delta_time()

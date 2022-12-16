@@ -68,11 +68,11 @@ class Spider(Enemy):
     def createExplosion(self):
         player = self.wave.game.player
         hit = CircularHitbox(
-            64,
+            120,
             [player],
             self.explosionDuration,
             self.handleExplosionCollision,
-            Sprite('./assets/images/attack-1.png', 1)
+            Sprite('./assets/images/spider_web.png', 1)
         )
         hit.x = self.x - hit.width / 2 + self.width / 2
         hit.y = self.y - hit.height / 2 + self.height / 2
