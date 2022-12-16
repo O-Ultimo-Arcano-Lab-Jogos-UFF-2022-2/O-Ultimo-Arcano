@@ -13,6 +13,7 @@ class Hitbox(GameObjectInterface):
         self.initialWidth: int | float = 0
         self.initialHeight: int | float = 0
         self.duration = duration
+        self.enabled = True
         HitboxManager.add(self)
 
     """ Dimensiona a hitbox mantendo o centro
@@ -29,6 +30,12 @@ class Hitbox(GameObjectInterface):
 
     def loop(self):
         super().loop()
+        
+        if (not self.enabled):
+            return
+
+        if (self.duration is None):
+            return
 
         if (self.duration == 0):
             self.destroy()
@@ -41,5 +48,6 @@ class Hitbox(GameObjectInterface):
         HitboxManager.remove(self)
 
 
-    @abstractmethod
-    def collided(self, targets: List[GameObjectInterface], callback = None): pass
+    def collisions(self, targets: List):
+        c = [ t for t in targets if self.collided(t) ]
+        return c

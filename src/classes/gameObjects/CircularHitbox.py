@@ -9,7 +9,7 @@ class CircularHitbox(Hitbox):
         radius: int | float, 
         targets: List[GameObjectInterface],
         duration = 1, 
-        callback = None, 
+        callback = None,
         sprite = None
     ):
         super().__init__(duration, sprite)
@@ -17,11 +17,18 @@ class CircularHitbox(Hitbox):
         self.radius = radius
         self.callback = callback
 
-    def checkCollision(self):
-        for target in self.targets: 
-            if (self.distanceTo(target, True) <= self.radius):
-                self.callback(self, target)
+    def collisions(self):
+        c = [ 
+            target for target in self.targets 
+            if self.distanceTo(target, True) <= self.radius 
+        ]
+            
+        return c
 
     def loop(self):
         super().loop()
-        self.checkCollision()
+
+        c = self.collisions()
+        
+        if (len(c) > 0  and self.callback):
+            self.callback(c)

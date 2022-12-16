@@ -26,6 +26,12 @@ class Spider(Enemy):
         para qual o Spider pode virar. """
         self.arcOffset = 10
 
+        """ Dano da explosão """
+        self.explosionDamage = 20
+
+        """ Duração da explosão (em frames) """
+        self.explosionDuration = 16
+        
         """ Booleana indicando se o Spider deve virar
         ou não. Normalmente isso é True quando a aranha
         está para colidir com a parede. """
@@ -54,16 +60,17 @@ class Spider(Enemy):
         randDegrees = radians(randomNumber(arcStart, arcEnd))
         return Vector(cos(randDegrees), sin(randDegrees))
 
-    def cb(self, h, targets):
-        pass
+    def handleExplosionCollision(self, collisions):
+        player = self.wave.game.player
+        player.takeHit(self.explosionDamage)
 
     def createExplosion(self):
         player = self.wave.game.player
         hit = CircularHitbox(
             64, 
             [ player ],
-            16, 
-            self.cb, 
+            self.explosionDuration, 
+            self.handleExplosionCollision, 
             Sprite('./assets/images/attack-1.png', 1)
         )
         hit.x = self.x - hit.width / 2 + self.width / 2
@@ -82,6 +89,8 @@ class Spider(Enemy):
     #
     # 4. Anda na direção que está escolhida como atualmente.
     def loop(self):
+        super().loop()
+
         player = self.wave.game.player
         window = self.wave.window
 
@@ -98,5 +107,4 @@ class Spider(Enemy):
         self.shouldTurn = self.willBeInWindownEdge()
         self.x += self.speed.x * window.delta_time()
         self.y += self.speed.y * window.delta_time()
-
         

@@ -20,7 +20,7 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-            Wave(self, window, 1, [Spider, Spider]),  
+            Wave(self, window, 3, [Spider]),  
         ])
 
         self.hud = src.classes.components.HUD.HUD(

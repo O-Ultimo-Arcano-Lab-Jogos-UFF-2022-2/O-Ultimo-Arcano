@@ -126,6 +126,7 @@ class Player:
 
     def takeHit(self, damage):
         if (self.invincibilityCooldown == 0):
+            self.invincibilityCooldown = self.absoluteInvincibilityCooldown
             self.currentHp = max(self.currentHp - damage, 0)
 
             if self.currentHp == 0:
