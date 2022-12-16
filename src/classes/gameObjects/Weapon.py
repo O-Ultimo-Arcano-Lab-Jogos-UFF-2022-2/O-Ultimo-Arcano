@@ -6,6 +6,7 @@ from src.pplay.sprite import *
 class Weapon:
     absoluteSpeed = Vector(450, 450)
     weaponRange = 600
+    baseDamage = 10
 
     def __init__(self, window, keyboard, player):
         self.window = window
@@ -14,6 +15,7 @@ class Weapon:
         self.player = player
 
         self.speed = Vector(0, 0)
+        self.damage = self.baseDamage
 
         self.distanceFromLaunchPoint = self.weaponRange
         self.flying = False

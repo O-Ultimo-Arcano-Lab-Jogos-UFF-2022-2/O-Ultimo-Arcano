@@ -35,8 +35,9 @@ class Player:
         self.hasWeapon = True
         self.throwCooldown = 0
 
-        self._currentHp = self.maxHp / 2
+        self._currentHp = self.maxHp
         self.invincibilityCooldown = 0
+        self.needsToBeDrawn = True
 
         self.sprintStamina = self.absoluteSprintStamina
         self.rechargingStamina = False
@@ -60,8 +61,11 @@ class Player:
 
         # Counting Invincibility Frames
         if (self.invincibilityCooldown != 0):
+            self.needsToBeDrawn = not self.needsToBeDrawn
             self.invincibilityCooldown = max(
                 self.invincibilityCooldown - self.window.delta_time(), 0)
+        else:
+            self.needsToBeDrawn = True
 
         # Recharging Stamina
         if self.rechargingStamina and self.sprintStamina < self.absoluteSprintStamina:
@@ -131,6 +135,7 @@ class Player:
 
     def takeHit(self, damage):
         if (self.invincibilityCooldown == 0):
+            self.needsToBeDrawn = False
             self.invincibilityCooldown = self.absoluteInvincibilityCooldown
             self.currentHp = self.currentHp - damage
 

@@ -2,7 +2,7 @@
 # 1. maxEnemies: number - Número máximo de inimigos vivos simuntâneamente
 # 2. life: number - A vida da wave. Inicia com o número total de inimigos
 #    e diminui em 1 para cada inimigo derrotado.
-# 3. enemies: Enemy[] - Uma lista com as classes dos inimigos que serão 
+# 3. enemies: Enemy[] - Uma lista com as classes dos inimigos que serão
 # spawnados em ordem.
 
 # -> Instância
@@ -34,6 +34,7 @@
 
 from random import randint
 
+
 class Wave():
     """ 
     Tempo de intervalo entre os spawns dos
@@ -41,9 +42,11 @@ class Wave():
     """
     spawnInterval = 0.75
 
-    def __init__(self, game, window, maxEnemiesAlive, enemies):
+    def __init__(self, game, window, maxEnemiesAlive, enemies, weapon):
         self.game = game
         self.window = window
+
+        self.weapon = weapon
 
         self.enemies = enemies
 
@@ -59,7 +62,7 @@ class Wave():
         Representa o índice do último inimigo spawanado.
         """
         self.lastSpawnIndex = 0
-        
+
         """ 
         Contagem de inimigos vivos.
         """
@@ -78,7 +81,8 @@ class Wave():
     o cursor (lastSpawnIndex) para o próximo índice
     da lista de inimigos.
     """
-    def spawnEnemy(self, x = None, y = None):
+
+    def spawnEnemy(self, x=None, y=None):
         if (self.aliveEnemies == self.maxAliveEnemies):
             return
 
@@ -96,7 +100,6 @@ class Wave():
         self.lastSpawnIndex += 1
 
         return enemy
-        
 
     """
     Remove um inimigo da lista de inimigos e atualiza
@@ -104,25 +107,24 @@ class Wave():
     diretamente pelo inimigo quando ele identifica que 
     foi destruido.
     """
+
     def destroyEnemy(self, target):
         self.aliveEnemies = [
             enemy for enemy in self.aliveEnemies if enemy != target
-        ] 
+        ]
 
         self.aliveEnemiesCount -= 1
         self.life -= 1
-
 
     def updateEnemies(self):
         for enemy in self.aliveEnemies:
             enemy.loop()
 
-
     def resetTimer(self):
         self.timer = Wave.spawnInterval
 
     # O tempo de intervalo entre os spawns só
-    # começa a contar quando há algum slot para o 
+    # começa a contar quando há algum slot para o
     # inimigo nascer.
     # Cada loop retorna a quantidade de inimigos
     # para que seja possível identificar quando a have
@@ -130,20 +132,24 @@ class Wave():
     def loop(self):
         if (self.life == 0):
             return 0
-        
+
         self.updateEnemies()
 
         if (self.aliveEnemiesCount < self.maxAliveEnemies or
-            self.lastSpawnIndex < len(self.aliveEnemies)):
+                self.lastSpawnIndex < len(self.aliveEnemies)):
             self.timer -= self.window.delta_time()
-            
+
             if (self.timer <= 0):
                 self.spawnEnemy()
                 self.resetTimer()
+
+        for enemy in self.aliveEnemies:
+            if self.weapon.gameObject.collided(enemy.gameObject) and (self.weapon.returning or self.weapon.flying) and (self.weapon.visible):
+                enemy.takeHit(self.weapon.damage)
 
         return self.life
 
     def draw(self):
         for enemy in self.aliveEnemies:
-            enemy.gameObject.draw()
-        
+            if (enemy.needsToBeDrawn):
+                enemy.gameObject.draw()

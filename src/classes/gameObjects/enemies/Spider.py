@@ -5,16 +5,16 @@ from src.helpers.random import randomNumber
 from math import cos, sin, radians
 from src.classes.gameObjects.CircularHitbox import CircularHitbox
 
+
 class Spider(Enemy):
+    """ Vida do Spider. Este valor pode ser ajustado. """
+    MAX_HP = 20
 
     """ Intervalo entre as explosões (em segundos). """
     EXPLOSION_COOLDOWN = 2.5
 
     def __init__(self, wave):
         super().__init__(wave)
-
-        """ Vida do Spider """
-        self.life = 20
 
         """ Velocidade base do Spider. """
         self.baseSpeed = Vector(140, 140)
@@ -31,7 +31,7 @@ class Spider(Enemy):
 
         """ Duração da explosão (em frames) """
         self.explosionDuration = 16
-        
+
         """ Booleana indicando se o Spider deve virar
         ou não. Normalmente isso é True quando a aranha
         está para colidir com a parede. """
@@ -44,19 +44,20 @@ class Spider(Enemy):
             .setDirection(self.direction)
 
         """ @TODO Trocar o sprite pro da aranha """
-        self.gameObject = Sprite('./assets/images/goblin.png', 1)
+        self.gameObject = Sprite('./assets/images/spider.png', 1)
 
     """ Vira o Spider na direção do jogador.  """
+
     def turn(self):
-        vectorToPlayer = Vector.fromObjects(self, self.wave.game.player.gameObject)
-        rotationAngle = randomNumber(-self.arcOffset, self.arcOffset) 
+        vectorToPlayer = Vector.fromObjects(
+            self, self.wave.game.player.gameObject)
+        rotationAngle = randomNumber(-self.arcOffset, self.arcOffset)
 
         self.speed = self.baseSpeed\
             .copy()\
             .setDirection(vectorToPlayer.rotateBy(rotationAngle))
-        
-    
-    def randomDirection(self, arcStart = 0, arcEnd = 360):
+
+    def randomDirection(self, arcStart=0, arcEnd=360):
         randDegrees = radians(randomNumber(arcStart, arcEnd))
         return Vector(cos(randDegrees), sin(randDegrees))
 
@@ -67,10 +68,10 @@ class Spider(Enemy):
     def createExplosion(self):
         player = self.wave.game.player
         hit = CircularHitbox(
-            64, 
-            [ player ],
-            self.explosionDuration, 
-            self.handleExplosionCollision, 
+            64,
+            [player],
+            self.explosionDuration,
+            self.handleExplosionCollision,
             Sprite('./assets/images/attack-1.png', 1)
         )
         hit.x = self.x - hit.width / 2 + self.width / 2
@@ -79,11 +80,11 @@ class Spider(Enemy):
     # -> Loop do spider:
     # 1. Verifica se o Spider enconstou na parede
     # (if colidiu) Muda a direção para tentar acertar o jogador
-    # 
+    #
     # 2. Verifica se o Spider colidiu com o jogador
     # (if colidiu) Aplica um dano ao jogador
     #
-    # 3. Verifica se o intervalo entre as explosões (explosionCooldown) 
+    # 3. Verifica se o intervalo entre as explosões (explosionCooldown)
     # ja terminou
     # (if explosionCooldown == 0) Gera uma nova explosão e reseta o cd.
     #
@@ -107,4 +108,3 @@ class Spider(Enemy):
         self.shouldTurn = self.willBeInWindownEdge()
         self.x += self.speed.x * window.delta_time()
         self.y += self.speed.y * window.delta_time()
-        

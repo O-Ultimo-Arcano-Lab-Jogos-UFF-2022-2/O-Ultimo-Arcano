@@ -4,6 +4,9 @@ from src.classes.utils.Vector import Vector
 
 
 class Goblin(Enemy):
+    """ Vida do Goblin. Este valor pode ser ajustado. """
+    MAX_HP = 40
+
     """ 
     # Estados do Goblin:
     Normal => Ele está so andando na direção do player
@@ -22,9 +25,6 @@ class Goblin(Enemy):
 
     def __init__(self, wave):
         super().__init__(wave)
-
-        """ Vida do Goblin. Este valor pode ser ajustado. """
-        self.life = 10
 
         """ Velocidade base do Goblin. É em cima dele que 
         os cálculos de velocidade serão feitos. Este valor
@@ -131,7 +131,7 @@ class Goblin(Enemy):
 
         # Por fim, se estiver dando dash...
         if (self.inState('DASHING')):
-            if (len(self.hitbox.collisions([ player.gameObject ]))):
+            if (len(self.hitbox.collisions([player.gameObject]))):
                 player.takeHit(self.dashDamage)
 
             # Receberá uma alta velocidade enquanto não chegar

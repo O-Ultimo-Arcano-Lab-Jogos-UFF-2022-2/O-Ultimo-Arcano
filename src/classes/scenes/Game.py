@@ -24,11 +24,7 @@ class Game:
         # Waves de teste
         # @TODO Configurar as waves
         self.waveManager = WaveManager(window, [
-<<<<<<< HEAD
-            Wave(self, window, 1, [Spider, Spider]),
-=======
-            Wave(self, window, 3, [Spider]),  
->>>>>>> enemy-collision
+            Wave(self, window, 1, [Spider, Spider], self.player.weapon),
         ])
 
         self.hud = src.classes.components.HUD.HUD(
@@ -37,14 +33,16 @@ class Game:
 
     def drawScreen(self):
         self.window.screen.blit(self.background, (0, 0))
-        self.player.gameObject.draw()
-        self.collectiblesManager.draw()
-        self.waveManager.draw()
-        HitboxManager.draw()
 
         if (self.player.weapon.visible):
             self.player.weapon.gameObject.draw()
 
+        if self.player.needsToBeDrawn:
+            self.player.gameObject.draw()
+
+        self.collectiblesManager.draw()
+        self.waveManager.draw()
+        HitboxManager.draw()
         self.hud.draw()
 
     def loop(self, leftClick, rightClick):
